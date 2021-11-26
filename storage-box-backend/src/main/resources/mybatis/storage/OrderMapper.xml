@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.OrderMapper">
+
+    <resultMap id="OrderVoMap" type="com.neusoft.project.storage.domain.OrderVo">
+        <id property="id" column="id"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="status" column="status"></result>
+        <result property="orderCode" column="order_code"></result>
+        <result property="orderName" column="order_name"></result>
+        <result property="emptyBoxOrderTime" column="empty_box_order_time"></result>
+        <result property="heavyBoxOrderTime" column="heavy_box_order_time"></result>
+        <result property="emptyBoxCallName" column="empty_box_call_name"></result>
+        <result property="emptyBoxCallPhone" column="empty_box_call_phone"></result>
+        <result property="emptyBoxCallAddress" column="empty_box_call_address"></result>
+        <result property="emptyBoxCallTime" column="empty_box_call_time"></result>
+        <result property="emptyBoxCallInterval" column="empty_box_call_interval"></result>
+        <result property="heavyBoxCallName" column="heavy_box_call_name"></result>
+        <result property="heavyBoxCallPhone" column="heavy_box_call_phone"></result>
+        <result property="heavyBoxCallAddress" column="heavy_box_call_address"></result>
+        <result property="heavyBoxCallTime" column="heavy_box_call_time"></result>
+        <result property="heavyBoxCallInterval" column="heavy_box_call_interval"></result>
+        <result property="boxStandardId" column="box_id"></result>
+        <result property="boxCode" column="box_code"></result>
+        <result property="boxStandard" column="box_standard"></result>
+        <result property="boxUnitPrice" column="box_unit_price"></result>
+        <result property="leaseDuration" column="lease_duration"></result>
+        <result property="totalPrice" column="total_price"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="appDelFlag" column="app_del_flag"></result>
+        <result property="backendDelFlag" column="backend_del_flag"></result>
+        <result property="nickName" column="nick_name"></result>
+    </resultMap>
+    <insert id="insertOrder" parameterType="com.neusoft.project.storage.domain.Order">
+        insert into t_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderCode != null and orderCode != ''">order_code,</if>
+            <if test="orderName != null and orderName != ''">order_name,</if>
+            <if test="emptyBoxOrderTime != null ">empty_box_order_time,</if>
+            <if test="heavyBoxOrderTime != null ">heavy_box_order_time,</if>
+            <if test="emptyBoxCallName != null and emptyBoxCallName != ''">empty_box_call_name,</if>
+            <if test="emptyBoxCallPhone != null and emptyBoxCallPhone != ''">empty_box_call_phone,</if>
+            <if test="emptyBoxCallAddress != null and emptyBoxCallAddress != ''">empty_box_call_address,</if>
+            <if test="emptyBoxCallTime != null ">empty_box_call_time,</if>
+            <if test="emptyBoxCallInterval != null and emptyBoxCallInterval != ''">empty_box_call_interval,</if>
+            <if test="boxStandardId != null and boxStandardId != ''">box_id,</if>
+            <if test="boxStandard != null and boxStandard != ''">box_standard,</if>
+            <if test="boxCode != null and boxCode != ''">box_code,</if>
+            <if test="boxUnitPrice != null">box_unit_price,</if>
+            <if test="leaseDuration != null and leaseDuration != ''">lease_duration,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="totalPrice != null and totalPrice != ''">total_price,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="version != null and version != ''">version,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">#{userId
+            },</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderCode != null and orderCode != ''">#{orderCode},</if>
+            <if test="orderName != null and orderName != ''">#{orderName},</if>
+            <if test="emptyBoxOrderTime != null ">#{emptyBoxOrderTime},</if>
+            <if test="heavyBoxOrderTime != null ">#{heavyBoxOrderTime},</if>
+            <if test="emptyBoxCallName != null and emptyBoxCallName != ''">#{emptyBoxCallName},</if>
+            <if test="emptyBoxCallPhone != null and emptyBoxCallPhone != ''">#{emptyBoxCallPhone},</if>
+            <if test="emptyBoxCallAddress != null and emptyBoxCallAddress != ''">#{emptyBoxCallAddress},</if>
+            <if test="emptyBoxCallTime != null ">#{emptyBoxCallTime},</if>
+            <if test="emptyBoxCallInterval != null and emptyBoxCallInterval != ''">#{emptyBoxCallInterval},</if>
+            <if test="boxStandardId != null and boxStandardId != ''">#{boxStandardId},</if>
+            <if test="boxStandard != null and boxStandard != ''">#{boxStandard},</if>
+            <if test="boxCode != null and boxCode != ''">#{boxCode},</if>
+            <if test="boxUnitPrice != null">#{boxUnitPrice},</if>
+            <if test="leaseDuration != null and leaseDuration != ''">#{leaseDuration},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="totalPrice != null and totalPrice != ''">#{totalPrice},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="version != null and version != ''">#{version},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        </trim>
+
+    </insert>
+    <update id="updateOrder">
+            update t_order
+            <set>
+                <if test="status != null ">
+                    status =#{status},
+                </if>
+                <if test="heavyBoxOrderTime != null">
+                    heavy_box_order_time =#{heavyBoxOrderTime},
+                </if>
+                <if test="heavyBoxCallName != null  ">
+                    heavy_box_call_name =#{heavyBoxCallName},
+                </if>
+                <if test="heavyBoxCallPhone != null ">
+                    heavy_box_call_phone =#{heavyBoxCallPhone},
+                </if>
+                <if test="heavyBoxCallAddress != null ">
+                    heavy_box_call_address =#{heavyBoxCallAddress},
+                </if>
+                <if test="heavyBoxCallTime != null ">
+                    heavy_box_call_time =#{heavyBoxCallTime},
+                </if>
+                <if test="heavyBoxCallInterval != null ">
+                    heavy_box_call_interval =#{heavyBoxCallInterval},
+                </if>
+                <if test="updateTime != null ">
+                    update_time =#{updateTime},
+                </if>
+                <if test="updateBy != null ">
+                    update_by =#{updateBy},
+                </if>
+                <if test="appDelFlag != null ">
+                    app_del_flag =#{appDelFlag},
+                </if>
+                <if test="delFlag != null ">
+                    del_flag =#{delFlag},
+                </if>
+                <if test="backendDelFlag != null ">
+                    backend_del_flag =#{backendDelFlag},
+                </if>
+            </set>
+            where id = #{id}
+
+    </update>
+
+
+    <select id="selectOrderList" parameterType="com.neusoft.project.storage.domain.OrderRequest"
+            resultMap="OrderVoMap">
+        SELECT
+        t_order.id,
+        t_order.user_id ,
+        t_order.`status`,
+        t_order.order_code ,
+        t_order.order_name ,
+        t_order.empty_box_order_time ,
+        t_order.heavy_box_order_time,
+        t_order.empty_box_call_name,
+        t_order.empty_box_call_phone,
+        t_order.empty_box_call_address,
+        t_order.empty_box_call_time,
+        t_order.empty_box_call_interval,
+        t_order.heavy_box_call_name,
+        t_order.heavy_box_call_phone,
+        t_order.heavy_box_call_address,
+        t_order.heavy_box_call_time,
+        t_order.heavy_box_call_interval,
+        t_order.box_id,
+        t_order.box_code,
+        t_order.box_standard,
+        t_order.box_unit_price,
+        t_order.lease_duration,
+        t_order.total_price,
+        t_order.sort_no,
+        t_order.create_time,
+        t_order.create_by,
+        t_order.update_time,
+        t_order.update_by,
+        t_order.version,
+        t_order.del_flag,
+        t_order.app_del_flag,
+        t_order.backend_del_flag,
+        sys_user.nick_name
+        FROM
+        t_order
+        LEFT JOIN sys_user ON t_order.user_id = sys_user.user_id
+        <where>
+            and t_order.app_del_flag='0'
+         <if test="nickName!=null and nickName!=''">
+          AND   sys_user.nick_name like concat(#{nickName},'%')
+         </if>
+            <if test="emptyBoxOrderTimeStart!=null and emptyBoxOrderTimeStart!='' and emptyBoxOrderTimeEnd!=null and emptyBoxOrderTimeEnd!=''">
+            AND t_order.empty_box_order_time between #{emptyBoxOrderTimeStart} and #{emptyBoxOrderTimeEnd}
+            </if>
+            <if test="emptyBoxOrderTimeStart!=null and emptyBoxOrderTimeStart!='' and heavyBoxOrderTimeEnd!=null and heavyBoxOrderTimeEnd!=''">
+                AND t_order.heavy_box_order_time between  #{heavyBoxOrderTimeStart} and  #{heavyBoxOrderTimeEnd}
+            </if>
+            <if test="status!=null and status!=''">
+                AND t_order.status =  #{status}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <select id="selectOrderListById" parameterType="java.lang.String"
+            resultMap="OrderVoMap">
+        SELECT
+        t_order.id,
+        t_order.user_id ,
+        t_order.`status`,
+        t_order.order_code ,
+        t_order.order_name ,
+        t_order.empty_box_order_time ,
+        t_order.heavy_box_order_time,
+        t_order.empty_box_call_name,
+        t_order.empty_box_call_phone,
+        t_order.empty_box_call_address,
+        t_order.empty_box_call_time,
+        t_order.empty_box_call_interval,
+        t_order.heavy_box_call_name,
+        t_order.heavy_box_call_phone,
+        t_order.heavy_box_call_address,
+        t_order.heavy_box_call_time,
+        t_order.heavy_box_call_interval,
+        t_order.box_id,
+        t_order.box_code,
+        t_order.box_standard,
+        t_order.box_unit_price,
+        t_order.lease_duration,
+        t_order.total_price,
+        t_order.sort_no,
+        t_order.create_time,
+        t_order.create_by,
+        t_order.update_time,
+        t_order.update_by,
+        t_order.version,
+        t_order.del_flag,
+        t_order.app_del_flag,
+        t_order.backend_del_flag,
+        sys_user.nick_name
+        FROM
+        t_order
+        LEFT JOIN sys_user ON t_order.user_id = sys_user.user_id
+        <where>
+            and t_order.app_del_flag='0'
+            and t_order.id= #{id}
+        </where>
+        order by update_time desc
+    </select>
+
+
+    <select id="selectOrderListByUserId" parameterType="java.lang.String"
+            resultMap="OrderVoMap">
+        SELECT
+        t_order.id,
+        t_order.user_id ,
+        t_order.`status`,
+        t_order.order_code ,
+        t_order.order_name ,
+        t_order.empty_box_order_time ,
+        t_order.heavy_box_order_time,
+        t_order.empty_box_call_name,
+        t_order.empty_box_call_phone,
+        t_order.empty_box_call_address,
+        t_order.empty_box_call_time,
+        t_order.empty_box_call_interval,
+        t_order.heavy_box_call_name,
+        t_order.heavy_box_call_phone,
+        t_order.heavy_box_call_address,
+        t_order.heavy_box_call_time,
+        t_order.heavy_box_call_interval,
+        t_order.box_id,
+        t_order.box_code,
+        t_order.box_standard,
+        t_order.box_unit_price,
+        t_order.lease_duration,
+        t_order.total_price,
+        t_order.sort_no,
+        t_order.create_time,
+        t_order.create_by,
+        t_order.update_time,
+        t_order.update_by,
+        t_order.version,
+        t_order.del_flag,
+        t_order.app_del_flag,
+        t_order.backend_del_flag,
+        sys_user.nick_name
+        FROM
+        t_order
+        LEFT JOIN sys_user ON t_order.user_id = sys_user.user_id
+        <where>
+            and t_order.app_del_flag='0'
+            and t_order.user_id= #{userId}
+        </where>
+        order by create_time desc
+    </select>
+    <select id="selectBackendOrderListById" parameterType="java.lang.String"
+            resultMap="OrderVoMap">
+        SELECT
+        t_order.id,
+        t_order.user_id ,
+        t_order.`status`,
+        t_order.order_code ,
+        t_order.order_name ,
+        t_order.empty_box_order_time ,
+        t_order.heavy_box_order_time,
+        t_order.empty_box_call_name,
+        t_order.empty_box_call_phone,
+        t_order.empty_box_call_address,
+        t_order.empty_box_call_time,
+        t_order.empty_box_call_interval,
+        t_order.heavy_box_call_name,
+        t_order.heavy_box_call_phone,
+        t_order.heavy_box_call_address,
+        t_order.heavy_box_call_time,
+        t_order.heavy_box_call_interval,
+        t_order.box_id,
+        t_order.box_code,
+        t_order.box_standard,
+        t_order.box_unit_price,
+        t_order.lease_duration,
+        t_order.total_price,
+        t_order.sort_no,
+        t_order.create_time,
+        t_order.create_by,
+        t_order.update_time,
+        t_order.update_by,
+        t_order.version,
+        t_order.del_flag,
+        t_order.app_del_flag,
+        t_order.backend_del_flag,
+        sys_user.nick_name
+        FROM
+        t_order
+        LEFT JOIN sys_user ON t_order.user_id = sys_user.user_id
+        <where>
+            and t_order.backend_del_flag='0'
+            and t_order.id= #{id}
+        </where>
+        order by update_time desc
+    </select>
+
+    <select id="selectAllOrderListById" parameterType="java.lang.String"
+            resultMap="OrderVoMap">
+        SELECT
+        t_order.id,
+        t_order.user_id ,
+        t_order.`status`,
+        t_order.order_code ,
+        t_order.order_name ,
+        t_order.empty_box_order_time ,
+        t_order.heavy_box_order_time,
+        t_order.empty_box_call_name,
+        t_order.empty_box_call_phone,
+        t_order.empty_box_call_address,
+        t_order.empty_box_call_time,
+        t_order.empty_box_call_interval,
+        t_order.heavy_box_call_name,
+        t_order.heavy_box_call_phone,
+        t_order.heavy_box_call_address,
+        t_order.heavy_box_call_time,
+        t_order.heavy_box_call_interval,
+        t_order.box_id,
+        t_order.box_code,
+        t_order.box_standard,
+        t_order.box_unit_price,
+        t_order.lease_duration,
+        t_order.total_price,
+        t_order.sort_no,
+        t_order.create_time,
+        t_order.create_by,
+        t_order.update_time,
+        t_order.update_by,
+        t_order.version,
+        t_order.del_flag,
+        t_order.app_del_flag,
+        t_order.backend_del_flag,
+        sys_user.nick_name
+        FROM
+        t_order
+        LEFT JOIN sys_user ON t_order.user_id = sys_user.user_id
+        <where>
+            and t_order.id= #{id}
+        </where>
+        order by update_time desc
+    </select>
+</mapper>

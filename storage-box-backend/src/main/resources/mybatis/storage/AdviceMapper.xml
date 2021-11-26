@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.AdveiceMapper">
+    <resultMap id="AdviceVoMap" type="com.neusoft.project.storage.domain.AdviceVo">
+        <id property="id" column="id"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="userName" column="userName"></result>
+    </resultMap>
+
+    <sql id="AdviceInfo">
+        t_advice.id,
+	t_advice.user_id,
+	t_advice.title,
+	t_advice.content,
+	t_advice.sort_no,
+	t_advice.create_time,
+	t_advice.create_by,
+	t_advice.update_time,
+	t_advice.update_by,
+t_advice.version,
+t_advice.del_flag
+    </sql>
+    <insert id="insertAdvice">
+            insert into t_advice
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="userId != null and userId != ''">user_id,</if>
+                <if test="title != null and title != ''">title,</if>
+                <if test="content != null and content != ''">content,</if>
+                <if test="sortNo != null and sortNo != ''">sort_no,</if>
+                <if test="createBy != null and createBy != ''">create_by,</if>
+                <if test="createTime != null ">create_time,</if>
+                <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="userId != null and userId != ''">#{userId},</if>
+                <if test="title != null and title != ''">#{title},</if>
+                <if test="content != null and content != ''">#{content},</if>
+                <if test="sortNo != null and sortNo != ''">#{sortNo},</if>
+                <if test="createBy != null and createBy != ''">#{createBy},</if>
+                <if test="createTime != null ">#{createTime},</if>
+                <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            </trim>
+    </insert>
+
+
+    <select id="selectAdviceList" parameterType="com.neusoft.project.storage.domain.AdviceVo"
+            resultMap="AdviceVoMap">
+        select <include refid="AdviceInfo"></include>
+        ,sys_user.user_name as userName
+        from t_advice left join sys_user
+        on  t_advice.user_id=sys_user.user_id
+        <where>
+            and t_advice.del_flag='0'
+            <if test="searchValue!=null and searchValue!=''">
+                and (
+                sys_user.user_name like concat(#{searchValue},'%')
+                or t_advice.title like concat(#{searchValue},'%')
+                )
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+</mapper>

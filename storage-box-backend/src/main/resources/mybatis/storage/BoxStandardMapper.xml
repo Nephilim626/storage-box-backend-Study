@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.BoxStandardMapper">
+    <resultMap id="BoxStandardVoMap" type="com.neusoft.project.storage.domain.BoxStandardVO">
+        <id property="id" column="id"></id>
+        <result property="boxStandard" column="box_standard"></result>
+        <result property="boxUnitPrice" column="box_unit_price"></result>
+        <result property="remark" column="remark"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="totalNumber" column="totalNumber"></result>
+        <result property="usedNumber" column="usedNumber"></result>
+        <result property="inventoryNumber" column="inventoryNumber"></result>
+        <result property="useRatio" column="useRatio"></result>
+    </resultMap>
+    <resultMap id="BoxStandardSelect" type="com.neusoft.project.storage.domain.BoxStandardSelect">
+        <id property="id" column="id"></id>
+        <result property="boxStandard" column="box_standard"></result>
+        <result property="boxUnitPrice" column="box_unit_price"></result>
+    </resultMap>
+
+    <sql id="BoxStandardInfovo">
+        t_box_standard.id,
+t_box_standard.box_standard,
+t_box_standard.box_unit_price,
+t_box_standard.remark,
+t_box_standard.sort_no,
+t_box_standard.create_time,
+t_box_standard.create_by,
+t_box_standard.update_time,
+t_box_standard.update_by,
+t_box_standard.version,
+t_box_standard.del_flag,
+    </sql>
+
+    <select id="selectBoxStandardList" parameterType="com.neusoft.project.storage.domain.BoxStandardEntity" resultMap="BoxStandardVoMap">
+
+        SELECT
+        t_box_standard.id,
+        t_box_standard.box_standard,
+        t_box_standard.box_unit_price,
+        t_box_standard.remark,
+        t_box_standard.sort_no,
+        t_box_standard.create_time,
+        t_box_standard.create_by,
+        t_box_standard.update_time,
+        t_box_standard.update_by,
+        t_box_standard.version,
+        t_box_standard.del_flag,
+        IFNULL(totalNumber,0) as totalNumber,
+        IFNULL(usedNumber,0) as usedNumber,
+        ( totalNumber - IFNULL(usedNumber,0) ) AS inventoryNumber,
+         concat(ROUND( ( IFNULL(usedNumber,0) / totalNumber )* 100),'%') AS useRatio
+        FROM
+        t_box_standard
+        LEFT JOIN ( SELECT box_standard, COUNT( id ) AS totalNumber FROM t_box_info WHERE del_flag = 0 GROUP BY box_standard ) a ON t_box_standard.box_standard = a.box_standard
+        LEFT JOIN ( SELECT box_standard, COUNT( id ) AS usedNumber FROM t_box_info WHERE is_used = 1 AND del_flag = 0 GROUP BY box_standard ) b ON t_box_standard.box_standard = b.box_standard
+        WHERE
+        del_flag='0'
+            <if test="searchValue!=null and searchValue!=''">
+                and (
+                t_box_standard.box_standard like concat(#{searchValue},'%')
+                )
+            </if>
+        order by update_time desc
+    </select>
+
+    <insert id="insertBoxStandard" parameterType="com.neusoft.project.storage.domain.BoxStandardEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into t_box_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boxStandard != null and boxStandard != ''">box_standard,</if>
+            <if test="boxUnitPrice != null and boxUnitPrice != ''">box_unit_price,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="sortNo != null and sortNo != ''">sort_no,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="version != null and version != ''">version,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boxStandard != null and boxStandard != ''">#{boxStandard},</if>
+            <if test="boxUnitPrice != null and boxUnitPrice != ''">#{boxUnitPrice},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="sortNo != null and sortNo != ''">#{sortNo},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="version != null and version != ''">#{version},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+
+        </trim>
+    </insert>
+
+
+    <update id="updatetBoxStandard" parameterType="com.neusoft.project.storage.domain.BoxStandardEntity" useGeneratedKeys="true" keyProperty="id" >
+        update t_box_standard
+        <set>
+            <if test="boxUnitPrice != null and boxUnitPrice != ''">
+                box_unit_price =#{boxUnitPrice},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark =#{remark},
+            </if>
+            <if test="sortNo != null and sortNo != ''">
+                sort_no =#{sortNo},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by =#{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time =#{updateTime},
+            </if>
+        </set>
+        where box_standard = #{boxStandard}
+    </update>
+
+
+    <update id="deletetBoxStandard" parameterType="com.neusoft.project.storage.domain.BoxStandardEntity" useGeneratedKeys="true" keyProperty="id" >
+        update t_box_standard
+        <set>
+            del_flag = '1',
+            <if test="updateTime != null ">
+                update_time =#{updateTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by =#{updateBy},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+    <select id="selectBoxStandardById" parameterType="java.lang.Long" resultMap="BoxStandardVoMap">
+
+        SELECT
+        t_box_standard.id,
+        t_box_standard.box_standard,
+        t_box_standard.box_unit_price,
+        t_box_standard.remark,
+        t_box_standard.sort_no,
+        t_box_standard.create_time,
+        t_box_standard.create_by,
+        t_box_standard.update_time,
+        t_box_standard.update_by,
+        t_box_standard.version,
+        t_box_standard.del_flag,
+        IFNULL(totalNumber,0) as totalNumber,
+        IFNULL(usedNumber,0) as usedNumber,
+        ( totalNumber - IFNULL(usedNumber,0) ) AS inventoryNumber,
+        concat(ROUND( ( IFNULL(usedNumber,0) / totalNumber )* 100),'%') AS useRatio
+        FROM
+        t_box_standard
+        LEFT JOIN ( SELECT box_standard, COUNT( id ) AS totalNumber FROM t_box_info WHERE del_flag = 0 GROUP BY box_standard ) a ON t_box_standard.box_standard = a.box_standard
+        LEFT JOIN ( SELECT box_standard, COUNT( id ) AS usedNumber FROM t_box_info WHERE is_used = 1 AND del_flag = 0 GROUP BY box_standard ) b ON t_box_standard.box_standard = b.box_standard
+        WHERE
+        del_flag='0'
+            and (
+            t_box_standard.id =#{id}
+            )
+        order by update_time desc
+    </select>
+
+    <select id="selectBoxStandard" resultMap="BoxStandardSelect">
+        SELECT
+            box_standard,
+            box_unit_price
+        FROM
+            t_box_standard
+        where   del_flag='0'
+    </select>
+
+</mapper>

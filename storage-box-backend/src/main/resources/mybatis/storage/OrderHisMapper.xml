@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.OrderHisMapper">
+
+    <resultMap id="OrderVoMap" type="com.neusoft.project.storage.domain.OrderHis">
+        <id property="id" column="id"></id>
+        <result property="order_id" column="order_id"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="status" column="status"></result>
+        <result property="orderCode" column="order_code"></result>
+        <result property="orderName" column="order_name"></result>
+        <result property="emptyBoxOrderTime" column="empty_box_order_time"></result>
+        <result property="heavyBoxOrderTime" column="heavy_box_order_time"></result>
+        <result property="emptyBoxCallName" column="empty_box_call_name"></result>
+        <result property="emptyBoxCallPhone" column="empty_box_call_phone"></result>
+        <result property="emptyBoxCallAddress" column="empty_box_call_address"></result>
+        <result property="emptyBoxCallTime" column="empty_box_call_time"></result>
+        <result property="emptyBoxCallInterval" column="empty_box_call_interval"></result>
+        <result property="heavyBoxCallName" column="heavy_box_call_name"></result>
+        <result property="heavyBoxCallPhone" column="heavy_box_call_phone"></result>
+        <result property="heavyBoxCallAddress" column="heavy_box_call_address"></result>
+        <result property="heavyBoxCallTime" column="heavy_box_call_time"></result>
+        <result property="heavyBoxCallInterval" column="heavy_box_call_interval"></result>
+        <result property="boxStandardId" column="box_id"></result>
+        <result property="boxCode" column="box_code"></result>
+        <result property="boxStandard" column="box_standard"></result>
+        <result property="boxUnitPrice" column="box_unit_price"></result>
+        <result property="leaseDuration" column="lease_duration"></result>
+        <result property="totalPrice" column="total_price"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="appDelFlag" column="app_del_flag"></result>
+        <result property="backendDelFlag" column="backend_del_flag"></result>
+    </resultMap>
+
+    <insert id="insertOrderHis" parameterType="com.neusoft.project.storage.domain.OrderVo">
+        insert into t_order_his
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="order_id != null and order_id != ''">order_id,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderCode != null and orderCode != ''">order_code,</if>
+            <if test="orderName != null and orderName != ''">order_name,</if>
+            <if test="emptyBoxOrderTime != null ">empty_box_order_time,</if>
+            <if test="heavyBoxOrderTime != null ">heavy_box_order_time,</if>
+            <if test="emptyBoxCallName != null and emptyBoxCallName != ''">empty_box_call_name,</if>
+            <if test="emptyBoxCallPhone != null and emptyBoxCallPhone != ''">empty_box_call_phone,</if>
+            <if test="emptyBoxCallAddress != null and emptyBoxCallAddress != ''">empty_box_call_address,</if>
+            <if test="emptyBoxCallTime != null ">empty_box_call_time,</if>
+            <if test="emptyBoxCallInterval != null and emptyBoxCallInterval != ''">empty_box_call_interval,</if>
+            <if test="boxStandardId != null and boxStandardId != ''">box_id,</if>
+            <if test="boxStandard != null and boxStandard != ''">box_standard,</if>
+            <if test="boxCode != null and boxCode != ''">box_code,</if>
+            <if test="boxUnitPrice != null">box_unit_price,</if>
+            <if test="leaseDuration != null and leaseDuration != ''">lease_duration,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="totalPrice != null and totalPrice != ''">total_price,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="version != null and version != ''">version,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="order_id != null and order_id != ''">#{order_id},</if>
+            <if test="userId != null and userId != ''">#{userId
+            },</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderCode != null and orderCode != ''">#{orderCode},</if>
+            <if test="orderName != null and orderName != ''">#{orderName},</if>
+            <if test="emptyBoxOrderTime != null ">#{emptyBoxOrderTime},</if>
+            <if test="heavyBoxOrderTime != null ">#{heavyBoxOrderTime},</if>
+            <if test="emptyBoxCallName != null and emptyBoxCallName != ''">#{emptyBoxCallName},</if>
+            <if test="emptyBoxCallPhone != null and emptyBoxCallPhone != ''">#{emptyBoxCallPhone},</if>
+            <if test="emptyBoxCallAddress != null and emptyBoxCallAddress != ''">#{emptyBoxCallAddress},</if>
+            <if test="emptyBoxCallTime != null ">#{emptyBoxCallTime},</if>
+            <if test="emptyBoxCallInterval != null and emptyBoxCallInterval != ''">#{emptyBoxCallInterval},</if>
+            <if test="boxStandardId != null and boxStandardId != ''">#{boxStandardId},</if>
+            <if test="boxStandard != null and boxStandard != ''">#{boxStandard},</if>
+            <if test="boxCode != null and boxCode != ''">#{boxCode},</if>
+            <if test="boxUnitPrice != null">#{boxUnitPrice},</if>
+            <if test="leaseDuration != null and leaseDuration != ''">#{leaseDuration},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="totalPrice != null and totalPrice != ''">#{totalPrice},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="version != null and version != ''">#{version},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        </trim>
+
+    </insert>
+
+</mapper>

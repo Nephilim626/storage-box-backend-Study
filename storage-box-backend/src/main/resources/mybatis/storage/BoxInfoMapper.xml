@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.BoxInfoMapper">
+    <resultMap id="BoxInfoVoMap" type="com.neusoft.project.storage.domain.BoxInfoVo">
+        <id property="id" column="id"></id>
+        <result property="boxCode" column="box_code"></result>
+        <result property="boxStandard" column="box_standard"></result>
+        <result property="boxUnitPrice" column="box_unit_price"></result>
+        <result property="usedBy" column="used_by"></result>
+        <result property="isUsed" column="is_used"></result>
+        <result property="remark" column="remark"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="usedByName" column="usedByName"></result>
+    </resultMap>
+    <resultMap id="12" type="BoxInfo">
+        <id property="id" column="id"></id>
+        <result property="boxCode" column="boxCode"></result>
+    </resultMap>
+
+
+
+    <insert id="insertBoxInfo" parameterType="com.neusoft.project.storage.domain.BoxInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_box_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boxCode != null and boxCode != ''">box_code,</if>
+            <if test="boxStandard != null and boxStandard != ''">box_standard,</if>
+            <if test="boxUnitPrice != null and boxUnitPrice != ''">box_unit_price,</if>
+            <if test="usedBy != null and usedBy != ''">used_by,</if>
+            <if test="isUsed != null and isUsed != ''">is_used,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="sortNo != null and sortNo != ''">sort_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boxCode != null and boxCode != ''">#{boxCode},</if>
+            <if test="boxStandard != null and boxStandard != ''">#{boxStandard},</if>
+            <if test="boxUnitPrice != null and boxUnitPrice != ''">#{boxUnitPrice},</if>
+            <if test="usedBy != null and usedBy != ''">#used_by,</if>
+            <if test="isUsed != null and isUsed != ''">is_used,</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="sortNo != null and sortNo != ''">#{sortNo},</if>
+        </trim>
+    </insert>
+
+    <select id="selectBoxInfoList" parameterType="com.neusoft.project.storage.domain.BoxInfo" resultMap="BoxInfoVoMap" >
+        SELECT
+            t_box_info.id,
+            t_box_info.box_code,
+            t_box_info.box_standard,
+            t_box_info.box_unit_price,
+            t_box_info.used_by,
+            t_box_info.is_used,
+            t_box_info.remark,
+            t_box_info.sort_no,
+            t_box_info.create_time,
+            t_box_info.create_by,
+            t_box_info.update_time,
+            t_box_info.update_by,
+            t_box_info.version,
+            t_box_info.del_flag,
+            sys_user.user_name as usedByName
+        FROM t_box_info LEFT JOIN sys_user
+        ON t_box_info.used_by=sys_user.user_id
+        WHERE
+        t_box_info.del_flag='0'
+        <if test="searchValue!=null and searchValue!=''">
+            and (
+            t_box_info.box_standard like concat(#{searchValue},'%')
+            )
+        </if>
+        order by box_code desc
+    </select>
+
+   <update id="deletetInfo" parameterType="com.neusoft.project.storage.domain.BoxInfo" useGeneratedKeys="true" keyProperty="id" >
+        update t_box_info
+        <set>
+            del_flag = '1',
+            <if test="updateTime != null ">
+                update_time =#{updateTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by =#{updateBy},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateInfoIsUsed" parameterType="com.neusoft.project.storage.domain.BoxInfo" useGeneratedKeys="true" keyProperty="id" >
+        update t_box_info
+        <set>
+            is_used=#{isUsed},
+            used_by=#{usedBy},
+            <if test="updateTime != null ">
+                update_time =#{updateTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by =#{updateBy},
+            </if>
+        </set>
+        where id = #{id} m
+    </update>
+
+    <select id="selectBoxInfoListAll" parameterType="com.neusoft.project.storage.domain.BoxInfo" resultMap="BoxInfoVoMap" >
+
+        SELECT
+        t_box_info.id,
+        t_box_info.box_code,
+        t_box_info.box_standard,
+        t_box_info.box_unit_price,
+        t_box_info.used_by,
+        t_box_info.is_used,
+        t_box_info.remark,
+        t_box_info.sort_no,
+        t_box_info.create_time,
+        t_box_info.create_by,
+        t_box_info.update_time,
+        t_box_info.update_by,
+        t_box_info.version,
+        t_box_info.del_flag,
+        sys_user.user_name as usedByName
+        FROM t_box_info LEFT JOIN sys_user
+        ON t_box_info.used_by=sys_user.user_id
+        WHERE
+            1=1
+        <if test="searchValue!=null and searchValue!=''">
+            and (
+            t_box_info.box_standard like concat(#{searchValue},'%')
+            )
+        </if>
+        order by box_code desc
+    </select>
+    <select id="selectValidbox" resultType="com.neusoft.project.storage.domain.BoxStandardSelectVO">
+        SELECT
+            t_box_standard.id as id,
+            t_box_standard.box_standard as boxStandard,
+            t_box_standard.box_unit_price as boxUnitPrice
+        FROM
+            t_box_standard
+                LEFT JOIN t_box_info ON t_box_standard.box_standard = t_box_info.box_standard
+        WHERE
+            t_box_info.is_used = '0'
+        GROUP BY
+            t_box_standard.box_standard
+    </select>
+    <select id="selectValidBoxInfoList" parameterType="com.neusoft.project.storage.domain.BoxInfo" resultMap="BoxInfoVoMap" >
+        SELECT
+        t_box_info.id,
+        t_box_info.box_code,
+        t_box_info.box_standard,
+        t_box_info.box_unit_price,
+        t_box_info.used_by,
+        t_box_info.is_used,
+        t_box_info.remark,
+        t_box_info.sort_no,
+        t_box_info.create_time,
+        t_box_info.create_by,
+        t_box_info.update_time,
+        t_box_info.update_by,
+        t_box_info.version,
+        t_box_info.del_flag,
+        sys_user.user_name as usedByName
+        FROM t_box_info LEFT JOIN sys_user
+        ON t_box_info.used_by=sys_user.user_id
+        WHERE
+        t_box_info.del_flag='0'
+          and t_box_info.is_used='0'
+        <if test="searchValue!=null and searchValue!=''">
+            and (
+            t_box_info.box_standard like concat(#{searchValue},'%')
+            )
+        </if>
+        order by box_code desc
+    </select>
+
+</mapper>

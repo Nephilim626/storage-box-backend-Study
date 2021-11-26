@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.AdvertisementMapper">
+    <resultMap id="AdvertisementMap" type="com.neusoft.project.storage.domain.Advertisement">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="imgUrl" column="img_url"></result>
+        <result property="points" column="points"></result>
+        <result property="isEnable" column="is_enable"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+    </resultMap>
+
+    <sql id="AdvertisementInfo">
+        id,
+        title,
+        content,
+        img_url,
+        points,
+        is_enable,
+        sort_no,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        version,
+        del_flag
+    </sql>
+
+
+
+    <select id="selectAdvertisementList" parameterType="com.neusoft.project.storage.domain.Advertisement"
+            resultMap="AdvertisementMap">
+        select <include refid="AdvertisementInfo"></include>
+        from t_advertisement
+        <where>
+            and del_flag='0'
+            <if test="searchValue!=null and searchValue!=''">
+                and (
+                title like concat(#{searchValue},'%')
+                )
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <insert id="insertAdvertisement" parameterType="com.neusoft.project.storage.domain.Advertisement" useGeneratedKeys="true" keyProperty="id">
+        insert into t_advertisement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="imgUrl != null and imgUrl != ''">img_url,</if>
+            <if test="points != null and points != ''">points,</if>
+            <if test="isEnable != null ">is_enable,</if>
+            <if test="sortNo != null and sortNo != ''">sort_no,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="version != null and version != ''">version,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="imgUrl != null and imgUrl != ''">#{imgUrl},</if>
+            <if test="points != null and points != ''">#{points},</if>
+            <if test="isEnable != null ">#{isEnable},</if>
+            <if test="sortNo != null and sortNo != ''">#{sortNo},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="version != null and version != ''">#{version},</if>
+        </trim>
+    </insert>
+
+    <select id="selectAdvertisementListDesc" parameterType="com.neusoft.project.storage.domain.Advertisement"
+            resultMap="AdvertisementMap">
+        select <include refid="AdvertisementInfo"></include>
+        from t_advertisement
+        <where>
+            and del_flag='0'
+            <if test="searchValue!=null and searchValue!=''">
+                and (
+                title like concat(#{searchValue},'%')
+                )
+            </if>
+        </where>
+        order by sort_no desc
+    </select>
+
+    <update id="updatetAdvertisement" parameterType="com.neusoft.project.storage.domain.Advertisement" useGeneratedKeys="true" keyProperty="id"  >
+        update t_advertisement
+        <set>
+            <if test="title != null and title != ''">
+                title =#{title},
+            </if>
+            <if test="content != null and content != ''">
+                content =#{content},
+            </if>
+            <if test="imgUrl != null and imgUrl != ''">
+                img_url =#{imgUrl},
+            </if>
+            <if test="points != null and points != ''">
+                points =#{points},
+            </if>
+            <if test="sortNo != null ">
+                sort_no =#{sortNo},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by =#{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time =#{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="deleteAdvertisement" parameterType="java.lang.Long" useGeneratedKeys="true" keyProperty="id" >
+        update t_advertisement
+        <set>
+            del_flag = '1',
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updatetAdvertisementStatus" parameterType="com.neusoft.project.storage.domain.UserEntity" useGeneratedKeys="true" keyProperty="id" >
+        update t_advertisement
+        <set>
+            <if test="isEnable != null ">
+                is_enable =#{isEnable},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by =#{updateBy},
+            </if>
+            <if test="updateTime != null ">
+                update_time =#{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="selectAdvertisementById" parameterType="com.neusoft.project.storage.domain.Advertisement"
+            resultMap="AdvertisementMap">
+        select <include refid="AdvertisementInfo"></include>
+        from t_advertisement
+        <where>
+            and del_flag='0'
+           and id = #{id}
+        </where>
+        order by update_time desc
+    </select>
+
+</mapper>

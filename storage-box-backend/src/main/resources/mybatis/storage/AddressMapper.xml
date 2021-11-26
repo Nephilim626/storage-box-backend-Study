@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.AddressMapper">
+    <resultMap id="AddressInfoMap" type="com.neusoft.project.storage.domain.AddressEntity">
+        <id property="id" column="id"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="contacts" column="contacts"></result>
+        <result property="contactsPhone" column="contacts_phone"></result>
+        <result property="province" column="province"></result>
+        <result property="provinceName" column="province_name"></result>
+        <result property="city" column="city"></result>
+        <result property="cityName" column="city_name"></result>
+        <result property="area" column="area"></result>
+        <result property="areaName" column="area_name"></result>
+        <result property="address" column="address"></result>
+        <result property="isDefault" column="is_default"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="version" column="version"></result>
+        <result property="delFlag" column="del_flag"></result>
+    </resultMap>
+
+
+    <select id="selectDefaultAddress" resultMap="AddressInfoMap">
+        SELECT
+            t_customer_address.id,
+            t_customer_address.user_id,
+            t_customer_address.contacts,
+            t_customer_address.contacts_phone,
+            t_customer_address.province,
+            t_customer_address.province_name,
+            t_customer_address.city,
+            t_customer_address.city_name,
+            t_customer_address.area,
+            t_customer_address.area_name,
+            t_customer_address.address,
+            t_customer_address.is_default,
+            t_customer_address.sort_no,
+            t_customer_address.create_time,
+            t_customer_address.create_by,
+            t_customer_address.update_time,
+            t_customer_address.update_by,
+            t_customer_address.version,
+            t_customer_address.del_flag
+        FROM
+            t_customer_address
+        WHERE t_customer_address.user_id=#{userId}
+          AND t_customer_address.is_default='0'
+    </select>
+
+    <select id="selectAddressList" resultType="com.neusoft.project.storage.domain.AddressEntity">
+        select id,
+               user_id        as userId,
+               contacts,
+               contacts_phone as contactsPhone,
+               province,
+               province_name  as provinceName,
+               city,
+               city_name      as cityName,
+               area,
+               area_name      as areaName,
+               address,
+               sort_no        as sortNo,
+               is_default     as isDefault,
+               create_time    as createTime,
+               create_by      as createBy,
+               update_time    as updateTime,
+               update_by      as updateBy,
+               del_flag       as delFlag
+        from t_customer_address
+        where del_flag = '0'
+          and user_id = #{userId}
+    </select>
+    <insert id="insertAddress" useGeneratedKeys="true" keyProperty="id" parameterType="AddressEntity">
+        insert into t_customer_address (
+        <if test="null!=userId">user_id,</if>
+        <if test="null!=contacts and contacts!=''">contacts,</if>
+        <if test="null!=contactsPhone and contactsPhone!=''">contacts_phone,</if>
+        <if test="null!=province and province!=''">province,</if>
+        <if test="null!=provinceName and provinceName!=''">province_name,</if>
+        <if test="null!=city and city!=''">city,</if>
+        <if test="null!=cityName and cityName!=''">city_name,</if>
+        <if test="null!=area and area!=''">area,</if>
+        <if test="null!=areaName and areaName!=''">area_name,</if>
+        <if test="null!=address and address!=''">address,</if>
+        <if test="null!=sortNo">sort_no,</if>
+        <if test="null!=isDefault">is_default,</if>
+        <if test="null!=createBy and createBy!=''">create_by,</if>
+        <if test="null!=delFlag and delFlag!=''">del_flag,</if>
+        create_time
+        )
+        values (
+        <if test="null!=userId">#{userId},</if>
+        <if test="null!=contacts and contacts!=''">#{contacts},</if>
+        <if test="null!=contactsPhone and contactsPhone!=''">#{contactsPhone},</if>
+        <if test="null!=province and province!=''">#{province},</if>
+        <if test="null!=provinceName and provinceName!=''">#{provinceName},</if>
+        <if test="null!=city and city!=''">#{city},</if>
+        <if test="null!=cityName and cityName!=''">#{cityName},</if>
+        <if test="null!=area and area!=''">#{area},</if>
+        <if test="null!=areaName and areaName!=''">#{areaName},</if>
+        <if test="null!=address and address!=''">#{address},</if>
+        <if test="null!=sortNo">#{sortNo},</if>
+        <if test="null!=isDefault">#{isDefault},</if>
+        <if test="null!=createBy and createBy!=''">#{createBy},</if>
+        <if test="null!=delFlag and delFlag!=''">#{delFlag},</if>
+        sysdate()
+        )
+    </insert>
+    <update id="updateDefault">
+        update t_customer_address
+        set is_default='0',
+            update_by=#{updateBy},
+            update_time=sysdate()
+        where del_flag = '0'
+          and id = #{id}
+    </update>
+    <update id="restDefault">
+        update t_customer_address
+        set is_default='1'
+        where del_flag = '0'
+          and user_id = #{userId}
+    </update>
+    <update id="updateAddress">
+        update t_customer_address
+        <set>
+            <if test="null!=contacts and contacts!=''">contacts=#{contacts},</if>
+            <if test="null!=contactsPhone and contactsPhone!=''">contacts_phone=#{contactsPhone},</if>
+            <if test="null!=address and address!=''">address=#{address},</if>
+            <if test="null!=isDefault">is_default=#{isDefault},</if>
+            <if test="null!=updateBy and updateBy!=''">update_by=#{updateBy},</if>
+            update_time=sysdate()
+        </set>
+        where del_flag='0' and id=#{id}
+    </update>
+
+    <update id="deleteAddress">
+        update t_customer_address
+        set del_flag='2',
+            update_by=#{updateBy},
+            update_time=sysdate()
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.project.storage.mapper.PointsMapper">
+    <resultMap id="PointsInfoMap" type="com.neusoft.project.storage.domain.PointsRecord">
+        <id property="id" column="id"></id>
+        <result property="userId" column="user_id"></result>
+        <result property="way" column="way"></result>
+        <result property="points" column="points"></result>
+        <result property="advertisementId" column="advertisement_id"></result>
+        <result property="orderId" column="order_id"></result>
+        <result property="sortNo" column="sort_no"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="createBy" column="create_by"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="updateBy" column="update_by"></result>
+        <result property="updateTime" column="update_time"></result>
+        <result property="version" column="version"></result>
+    </resultMap>
+
+    <insert id="insertPointRecord" parameterType="com.neusoft.project.storage.domain.PointsRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into t_point_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="way != null and way != ''">way,</if>
+            <if test="points != null and points != ''">points,</if>
+            <if test="advertisementId != null and advertisementId != ''">advertisement_id,</if>
+            <if test="orderId != null and orderId != ''">order_id,</if>
+            <if test="sortNo != null and sortNo != ''">sort_no,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="version != null and version != ''">version,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="way != null and way != ''">#{way},</if>
+            <if test="points != null and points != ''">#{points},</if>
+            <if test="advertisementId != null and advertisementId != ''">#{advertisementId},</if>
+            <if test="orderId != null and orderId != ''">#{orderId},</if>
+            <if test="sortNo != null and sortNo != ''">#{sortNo},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="version != null and version != ''">#{version},</if>
+        </trim>
+
+    </insert>
+    <select id="selectPointRecordList" resultMap="PointsInfoMap">
+        select * from t_point_record where del_flag='0'
+    </select>
+    <select id="selectPointByUserId" resultType="java.lang.Long">
+        SELECT sys_user.current_points FROM sys_user WHERE sys_user.user_id =#{userId}
+    </select>
+</mapper>
