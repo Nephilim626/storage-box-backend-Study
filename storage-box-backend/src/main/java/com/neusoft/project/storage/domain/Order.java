@@ -23,14 +23,16 @@ public class Order extends BaseEntity {
     private String emptyBoxCallName;
     private String emptyBoxCallPhone;
     private String emptyBoxCallAddress;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date emptyBoxCallTime;
     private String emptyBoxCallInterval;
     private String heavyBoxCallName;
     private String heavyBoxCallPhone;
     private String heavyBoxCallAddress;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date heavyBoxCallTime;
     private String heavyBoxCallInterval;
-    private long boxStandardId;
+    private long boxId;
     private long boxCode;
     private String boxStandard;
     private long boxUnitPrice;
